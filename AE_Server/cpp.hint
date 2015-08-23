@@ -1,0 +1,1 @@
+#define SCOPED_LOCK( A ) if( CAutoLock _syncVar = A ) { assert( 0 ); throw 0; } else
