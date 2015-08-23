@@ -201,7 +201,6 @@ namespace ServerManagementTool
                     // TODO: 수신 패킷 처리기 구현
                     //       Peer.cs을 생성하고 고유 클라이언트 처리를 전담하는 수준 바로 전단계에서 필요로 하는 것들을 여기에 구현한다.
                     //       OneNote 내용(상황 정리) 참고할 것.
-                    // TEST: GitHub에 이력이 남을까?
                 }
             }
             while( 0 < RcdSize );

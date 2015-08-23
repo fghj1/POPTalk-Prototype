@@ -1,1 +1,0 @@
-D:\My Documents\GitHub\POPTalk-Prototype\ServerManagementTool\ServerManagementTool\bin\Debug\ServerManagementTool.exe.config
