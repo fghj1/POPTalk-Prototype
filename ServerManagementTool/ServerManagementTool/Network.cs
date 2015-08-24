@@ -18,7 +18,7 @@ namespace ServerManagementTool
             DISCONNECT,
         }
 
-        protected Socket PeerSocket = null;
+        private Socket PeerSocket = null;
 
         private int NetErrNo = ( int )ErrorCode.SUCCESS;
         private ErrorCode NetworkError
@@ -32,6 +32,8 @@ namespace ServerManagementTool
         private CircleStream RecvBuff = new CircleStream( BuffSize );
         private byte[] TempSendBuff = new byte[BuffSize];
         private byte[] TempRecvBuff = new byte[BuffSize];
+
+        private Peer CommonPeer = new Peer();
 
         public int Connect( IPAddress IPADR, int Port )
         {
@@ -201,6 +203,10 @@ namespace ServerManagementTool
                     // TODO: 수신 패킷 처리기 구현
                     //       Peer.cs을 생성하고 고유 클라이언트 처리를 전담하는 수준 바로 전단계에서 필요로 하는 것들을 여기에 구현한다.
                     //       OneNote 내용(상황 정리) 참고할 것.
+                    if( null != CommonPeer )
+                        CommonPeer.ProcessPacket( Packet );
+                    //else
+                    //    // TODO: 예외 처리를 어떻게 할 것인가?
                 }
             }
             while( 0 < RcdSize );
