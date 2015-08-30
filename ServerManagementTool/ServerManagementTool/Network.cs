@@ -201,9 +201,19 @@ namespace ServerManagementTool
                     // TODO: 수신 패킷 처리기 구현
                     //       Peer.cs을 생성하고 고유 클라이언트 처리를 전담하는 수준 바로 전단계에서 필요로 하는 것들을 여기에 구현한다.
                     //       OneNote 내용(상황 정리) 참고할 것.
+                    ProcessPacket( Packet );
                 }
             }
             while( 0 < RcdSize );
+        }
+
+        // TODO: 여기서부터 객체 지향적으로 정리해야 한다.
+        //       일단 단 하나의 패킷이라도 서로 주고 받는 상태를 만들어보기위해 객체 지향적인 것은 생각치 않고 구현한다.
+        //       서버측에서 단 하나의 패킷을 주기적으로 송신하도록 구현한다.
+        public void ProcessPacket( TPacket Packet )
+        {
+            // TODO: TPacket의 프로토콜이 처리할 수 있는 프로토콜인지 확인해야 한다.
+            //       이렇게 하려면 우선 TPacket에서 프로토콜을 추출할 수 있도록 TPacket 클래스를 온전하게 구현해야 한다.
         }
     }
 }
