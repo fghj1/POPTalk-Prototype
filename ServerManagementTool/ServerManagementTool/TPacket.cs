@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ServerManagementTool
 {
-    public class TPacket : ObjectPool<TPacket>
+    public class TPacket : ObjectPool<TPacket>, IPacketBase
     {
         public byte[] HeaderBuff = new byte[PACKETHEADERSIZE];
         public byte[] DataBuff = new byte[PACKETBUFFERSIZE];
@@ -33,11 +33,6 @@ namespace ServerManagementTool
             DataReader = new BinaryReader( DataStream, System.Text.Encoding.Unicode );
         }
 
-        // TODO: 패킷 헤더 구현할 것
-        // TODO: TPacket의 각 요소 값을 가져올 수 있는 편의성 함수 구현
-        // TODO: 패킷 읽기, 쓰기를 여기에 구현한다.
-        //       읽기와 쓰기는 데이터 타입별로 이뤄져야 한다.
-        // TODO: 데이터 타입별 읽기, 쓰기를 할 수 있도록 부모 클래스로써 인터페이스를 둔다.
         public ushort TotalSize
         {
             get { return ( ushort )( HeaderStream.Length + DataStream.Position ); }  // TODO: 의도한 값이 반환되는지 확인 필요
@@ -59,10 +54,486 @@ namespace ServerManagementTool
             get { return HeaderBuff; }
         }
 
+        public ushort Protocol
+        {
+            get
+            {
+                HeaderStream.Seek( 2, SeekOrigin.Begin );
+                return HeaderReader.ReadUInt16();
+            }
+
+            set
+            {
+                HeaderStream.Seek( 2, SeekOrigin.Begin );
+                HeaderWriter.Write( value );
+            }
+        }
+
         public byte[] Data
         {
             get { return DataBuff; }
             set { DataBuff = value; }
         }
+
+        #region IPacketBase - Read() group
+        bool Read( out bool Value )
+        {
+            Value = false;
+
+            try
+            {
+                Value = DataReader.ReadBoolean();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out byte Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadByte();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out byte[] Value, int Length )
+        {
+            Value = null;
+
+            try
+            {
+                Value = DataReader.ReadBytes( Length );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out sbyte Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadSByte();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out short Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadInt16();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out ushort Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadUInt16();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out int Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadInt32();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out uint Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadUInt32();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out long Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadInt64();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out ulong Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadUInt64();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out float Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadSingle();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out double Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadDouble();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out decimal Value )
+        {
+            Value = 0;
+
+            try
+            {
+                Value = DataReader.ReadDecimal();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out char Value )
+        {
+            Value = '0';
+
+            try
+            {
+                Value = DataReader.ReadChar();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Read( out char[] Value, int Length )
+        {
+            Value = null;
+
+            try
+            {
+                Value = DataReader.ReadChars( Length );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
+
+        #region IPacketBase - Write() group
+        bool Write( bool Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( byte Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( byte[] Value )
+        {
+            try
+            {
+                // TODO: 패킷 버퍼에 기록할 때 데이터 구조가 송수신측 모두 같은 구조를 갖는지 확인할 것
+                //       예를 들어, 배열을 기록하기 전에 배열의 크기를 먼저 기록하고 내용을 기록하는 경우
+                //       배열의 크기를 기록하지 않고 내용만 기록하는 경우
+                DataWriter.Write( ( ushort )( Value.Length ) );
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( sbyte Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( short Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( ushort Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( int Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( uint Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( long Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( ulong Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( float Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( double Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( decimal Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( char Value )
+        {
+            try
+            {
+                DataWriter.Write( Value );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Write( char[] Value, int Length )
+        {
+            try
+            {
+                // TODO: 패킷 버퍼에 기록할 때 데이터 구조가 송수신측 모두 같은 구조를 갖는지 확인할 것
+                //       예를 들어, 배열을 기록하기 전에 배열의 크기를 먼저 기록하고 내용을 기록하는 경우
+                //       배열의 크기를 기록하지 않고 내용만 기록하는 경우
+                DataWriter.Write( Value, 0, Length );
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

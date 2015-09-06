@@ -2,28 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SysProtocolDef;
+using ConnProtocolDef;
 
 namespace ServerManagementTool
 {
-    // TODO: 패킷 프로토콜만 관리하는 클래스를 모아 별도 파일로 뺀다.
-    // TODO: 패킷 프로토콜 구조 정의 클래스
-    //       Matrix의 Protocol.cs / ProtocolTagMap.cs을 참고할 것
-
-    static public class ProtocolTagList
+    static public class ProtocolNoList
     {
-        static private Dictionary<int, Type> ProtocolTagDict;
+        static private Dictionary<int, Type> ProtocolNoDict;
 
-        static public Dictionary<int, Type> GetProtocolTagDict()
+        static public Dictionary<int, Type> GetProtocolNoDict()
         {
-            if( null != ProtocolTagDict )
-                return ProtocolTagDict;
+            if( null != ProtocolNoDict )
+                return ProtocolNoDict;
 
-            ProtocolTagDict = new Dictionary<int, Type>();
+            ProtocolNoDict = new Dictionary<int, Type>();
 
-            //ProtocolTagDict[/**/] = typeof( /**/ );  // TODO: 위 패킷 프로토콜 구조 정의에서 정의된 패킷 프로토콜을 할당한다.
-            //ProtocolTagDict[/**/] = typeof( /**/ );  // TODO: 위 패킷 프로토콜 구조 정의에서 정의된 패킷 프로토콜을 할당한다.
+            ProtocolNoDict[REQ_LOGIN.No] = typeof( REQ_LOGIN );
+            ProtocolNoDict[ACK_LOGIN.No] = typeof( ACK_LOGIN );
+            ProtocolNoDict[CMD_HEARTBEAT.No] = typeof( CMD_HEARTBEAT );
+            // TODO: 필요한 프로토콜을 여기에 추가
 
-            return ProtocolTagDict;
+            return ProtocolNoDict;
         }
     }
 
@@ -38,33 +38,34 @@ namespace ServerManagementTool
         // TODO: 패킷 처리기 구현
         public void ProcessPacket( TPacket Packet )
         {
-            // TODO: 이하 코드를 본 프로젝트에 맞게 수정할 것
+            // TODO: 이하 코드를 본 프로젝트에 맞게 수정할 것(변수명도 적절히 변경할 것)
             object ProtocolObj = null;
             Type ProtocolType = null;
-            IProtocol PacketProtocol = null;  // TODO: IProtocol은 Protocol 유형의 부모이며 추상 클래스로 자식들에게 기본 함수 제시
+            IProtocolBase TargetPacket = null;
 
-            Dictionary<int, Type> Protocols = ProtocolTagList.GetProtocolTagDict();
+            Dictionary<int, Type> Protocols = ProtocolNoList.GetProtocolNoDict();
             if( null == Protocols )
                 return;
 
-            if( Protocols.TryGetValue( Packet.Protocol, out ProtocolType ) )  // TOOD: TPacket도 아직 완전히 구현된 것 아니다.
+            if( Protocols.TryGetValue( Packet.Protocol, out ProtocolType ) )
             {
                 ProtocolObj = Activator.CreateInstance( ProtocolType );
 
-                if( ProtocolObj is IProtocol )
+                if( ProtocolObj is IProtocolBase )
                 {
-                    PacketProtocol = ProtocolObj as IProtocol;
-                    PacketProtocol.Read( Packet );
+                    TargetPacket = ProtocolObj as IProtocolBase;
+                    TargetPacket.Read( Packet );
                 }
                 else
                 {
                     // TODO: Unknown pakcet 출력
-                    //       IProtocol 계열과 맞지 않는 ProtocolObj다.
+                    //       IProtocolBase 계열과 맞지 않는 ProtocolType형 객체(ProtocolObj)다.
                 }
 
-                lock( m_PackQueue )  // TODO: 처리해야 할 패킷 데이터들을 모아놓은 큐를 구현해야 한다.
+                // TODO: 패킷을 꺼내서 처리할 곳에서 m_PackQueue를 구현한다.
+                lock( m_PackQueue )
                 {
-                    m_PackQueue.Enqueue( PacketProtocol );
+                    m_PackQueue.Enqueue( TargetPacket );
                 }
             }
             else

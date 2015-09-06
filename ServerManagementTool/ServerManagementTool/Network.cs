@@ -194,7 +194,6 @@ namespace ServerManagementTool
                     if( RecvBuff.Length < PacketSize )
                         break;
 
-                    // TODO: 서버와 클라이언트 통신하는데 사용할 TPacket 타입을 정의하고 이를 사용하여 서버가 보내온 패킷을 받아낼 수 있어야 한다.
                     TPacket Packet = TPacket.New();
 
                     RecvBuff.Read( Packet.HeaderBuff, 0, Packet.HeaderBuff.Length );
@@ -210,15 +209,6 @@ namespace ServerManagementTool
                 }
             }
             while( 0 < RcdSize );
-        }
-
-        // TODO: 여기서부터 객체 지향적으로 정리해야 한다.
-        //       일단 단 하나의 패킷이라도 서로 주고 받는 상태를 만들어보기위해 객체 지향적인 것은 생각치 않고 구현한다.
-        //       서버측에서 단 하나의 패킷을 주기적으로 송신하도록 구현한다.
-        public void ProcessPacket( TPacket Packet )
-        {
-            // TODO: TPacket의 프로토콜이 처리할 수 있는 프로토콜인지 확인해야 한다.
-            //       이렇게 하려면 우선 TPacket에서 프로토콜을 추출할 수 있도록 TPacket 클래스를 온전하게 구현해야 한다.
         }
     }
 }
