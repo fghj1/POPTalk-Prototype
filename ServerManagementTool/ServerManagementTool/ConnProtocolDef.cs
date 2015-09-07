@@ -17,22 +17,22 @@ namespace ConnProtocolDef
         public string ID = string.Empty;
         public string Password = string.Empty;
 
-        int GetProtocolNo()
+        public int GetProtocolNo()
         {
             return No;
         }
 
-        UInt64 GetTo()
+        public UInt64 GetTo()
         {
             return To;
         }
 
-        UInt64 GetFrom()
+        public UInt64 GetFrom()
         {
             return From;
         }
 
-        bool Read( IPacketBase UnitPacket )
+        public bool Read( IPacketBase UnitPacket )
         {
             int Length = 0;
             char[] Temp = null;
@@ -59,7 +59,7 @@ namespace ConnProtocolDef
             return true;
         }
 
-        bool Write( IPacketBase UnitPacket )
+        public bool Write( IPacketBase UnitPacket )
         {
             // ID
             if( false == UnitPacket.Write( ID.Length ) )
@@ -92,22 +92,22 @@ namespace ConnProtocolDef
         public int LoginResult = 0;
         public UInt64 GeneralKey = 0;
 
-        int GetProtocolNo()
+        public int GetProtocolNo()
         {
             return No;
         }
 
-        UInt64 GetTo()
+        public UInt64 GetTo()
         {
             return To;
         }
 
-        UInt64 GetFrom()
+        public UInt64 GetFrom()
         {
             return From;
         }
 
-        bool Read( IPacketBase UnitPacket )
+        public bool Read( IPacketBase UnitPacket )
         {
             // Login result
             if( false == UnitPacket.Read( out LoginResult ) )
@@ -122,7 +122,7 @@ namespace ConnProtocolDef
             return true;
         }
 
-        bool Write( IPacketBase UnitPacket )
+        public bool Write( IPacketBase UnitPacket )
         {
             // Login result
             if( false == UnitPacket.Write( LoginResult ) )

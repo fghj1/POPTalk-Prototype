@@ -22,7 +22,7 @@ namespace ServerManagementTool
         private BinaryWriter DataWriter;
         private BinaryReader DataReader;
 
-        private TPacket()
+        public TPacket()
         {
             HeaderStream = new MemoryStream( HeaderBuff );
             DataStream = new MemoryStream( DataBuff );
@@ -76,7 +76,7 @@ namespace ServerManagementTool
         }
 
         #region IPacketBase - Read() group
-        bool Read( out bool Value )
+        public bool Read( out bool Value )
         {
             Value = false;
 
@@ -92,7 +92,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out byte Value )
+        public bool Read( out byte Value )
         {
             Value = 0;
 
@@ -108,7 +108,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out byte[] Value, int Length )
+        public bool Read( out byte[] Value, int Length )
         {
             Value = null;
 
@@ -124,7 +124,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out sbyte Value )
+        public bool Read( out sbyte Value )
         {
             Value = 0;
 
@@ -140,7 +140,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out short Value )
+        public bool Read( out short Value )
         {
             Value = 0;
 
@@ -156,7 +156,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out ushort Value )
+        public bool Read( out ushort Value )
         {
             Value = 0;
 
@@ -172,7 +172,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out int Value )
+        public bool Read( out int Value )
         {
             Value = 0;
 
@@ -188,7 +188,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out uint Value )
+        public bool Read( out uint Value )
         {
             Value = 0;
 
@@ -204,7 +204,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out long Value )
+        public bool Read( out long Value )
         {
             Value = 0;
 
@@ -220,7 +220,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out ulong Value )
+        public bool Read( out ulong Value )
         {
             Value = 0;
 
@@ -236,7 +236,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out float Value )
+        public bool Read( out float Value )
         {
             Value = 0;
 
@@ -252,7 +252,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out double Value )
+        public bool Read( out double Value )
         {
             Value = 0;
 
@@ -268,7 +268,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out decimal Value )
+        public bool Read( out decimal Value )
         {
             Value = 0;
 
@@ -284,7 +284,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out char Value )
+        public bool Read( out char Value )
         {
             Value = '0';
 
@@ -300,7 +300,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Read( out char[] Value, int Length )
+        public bool Read( out char[] Value, int Length )
         {
             Value = null;
 
@@ -318,7 +318,7 @@ namespace ServerManagementTool
         #endregion
 
         #region IPacketBase - Write() group
-        bool Write( bool Value )
+        public bool Write( bool Value )
         {
             try
             {
@@ -332,7 +332,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( byte Value )
+        public bool Write( byte Value )
         {
             try
             {
@@ -346,7 +346,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( byte[] Value )
+        public bool Write( byte[] Value )
         {
             try
             {
@@ -364,7 +364,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( sbyte Value )
+        public bool Write( sbyte Value )
         {
             try
             {
@@ -378,7 +378,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( short Value )
+        public bool Write( short Value )
         {
             try
             {
@@ -392,7 +392,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( ushort Value )
+        public bool Write( ushort Value )
         {
             try
             {
@@ -406,7 +406,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( int Value )
+        public bool Write( int Value )
         {
             try
             {
@@ -420,7 +420,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( uint Value )
+        public bool Write( uint Value )
         {
             try
             {
@@ -434,7 +434,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( long Value )
+        public bool Write( long Value )
         {
             try
             {
@@ -448,7 +448,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( ulong Value )
+        public bool Write( ulong Value )
         {
             try
             {
@@ -462,7 +462,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( float Value )
+        public bool Write( float Value )
         {
             try
             {
@@ -476,7 +476,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( double Value )
+        public bool Write( double Value )
         {
             try
             {
@@ -490,7 +490,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( decimal Value )
+        public bool Write( decimal Value )
         {
             try
             {
@@ -504,7 +504,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( char Value )
+        public bool Write( char Value )
         {
             try
             {
@@ -518,7 +518,7 @@ namespace ServerManagementTool
             return true;
         }
 
-        bool Write( char[] Value, int Length )
+        public bool Write( char[] Value, int Length )
         {
             try
             {

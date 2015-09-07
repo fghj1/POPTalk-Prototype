@@ -16,22 +16,22 @@ namespace SysProtocolDef
 
         public UInt64 GeneralKey = 0;
 
-        int GetProtocolNo()
+        public int GetProtocolNo()
         {
             return No;
         }
 
-        UInt64 GetTo()
+        public UInt64 GetTo()
         {
             return To;
         }
 
-        UInt64 GetFrom()
+        public UInt64 GetFrom()
         {
             return From;
         }
 
-        bool Read( IPacketBase UnitPacket )
+        public bool Read( IPacketBase UnitPacket )
         {
             // General Key
             if( false == UnitPacket.Read( out GeneralKey ) )
@@ -42,7 +42,7 @@ namespace SysProtocolDef
             return true;
         }
 
-        bool Write( IPacketBase UnitPacket )
+        public bool Write( IPacketBase UnitPacket )
         {
             // General Key
             if( false == UnitPacket.Write( GeneralKey ) )

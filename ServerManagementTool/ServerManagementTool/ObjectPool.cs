@@ -52,7 +52,5 @@ namespace ServerManagementTool
             IsDisposed = false;
             ReInit();
         }
-
-        protected abstract void ReInit();
     }
 }

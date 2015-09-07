@@ -9,7 +9,7 @@ namespace ServerManagementTool
     {
         bool Read( out bool Value );
         bool Read( out byte Value );
-        bool Read( out byte[] Value );
+        bool Read( out byte[] Value, int Length );
         bool Read( out sbyte Value );
         bool Read( out short Value );
         bool Read( out ushort Value );
