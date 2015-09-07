@@ -50,7 +50,9 @@ namespace ServerManagementTool
         public void Undispose()
         {
             IsDisposed = false;
-            ReInit();
+            Reinit();
         }
+
+        protected abstract void Reinit();
     }
 }

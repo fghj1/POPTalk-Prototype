@@ -11,8 +11,8 @@ namespace ServerManagementTool
         public byte[] HeaderBuff = new byte[PACKETHEADERSIZE];
         public byte[] DataBuff = new byte[PACKETBUFFERSIZE];
 
-        public Stream HeaderStream = null;
-        public Stream DataStream = null;
+        private Stream HeaderStream = null;
+        private Stream DataStream = null;
 
         private const int PACKETHEADERSIZE = 12;
         private const int PACKETBUFFERSIZE = 8192 * 3;
@@ -31,6 +31,11 @@ namespace ServerManagementTool
             HeaderReader = new BinaryReader( HeaderStream, System.Text.Encoding.Unicode );
             DataWriter = new BinaryWriter( DataStream, System.Text.Encoding.Unicode );
             DataReader = new BinaryReader( DataStream, System.Text.Encoding.Unicode );
+        }
+
+        public long SeekData( long Offset, SeekOrigin StartField )
+        {
+            return DataStream.Seek( Offset, StartField );
         }
 
         public ushort TotalSize
@@ -74,6 +79,13 @@ namespace ServerManagementTool
             get { return DataBuff; }
             set { DataBuff = value; }
         }
+
+        #region ObjectPool - Abstract function
+        protected override void Reinit()
+        {
+            SeekData( 0, SeekOrigin.Begin );
+        }
+        #endregion
 
         #region IPacketBase - Read() group
         public bool Read( out bool Value )
