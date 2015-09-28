@@ -206,6 +206,11 @@ namespace ServerManagementTool
                         CommonPeer.ProcessPacket( Packet );
                     //else
                     //    // TODO: 예외 처리를 어떻게 할 것인가?
+
+                    // TODO: TPacket의 객체인 Packet가 }을 빠져나가면서 기본 소멸자가 호출되는 것인지 확인한다.
+                    // TODO: 또한 기본 소멸자가 호출된다면 TPacket::Dispose()가 자동으로 호출되는지 확인한다.
+                    //       Matrix에서도 Dispose()를 직접 호출하는 곳을 찾지 못했다. 그래서 혹시 소멸자가 호출되면서 자동으로 호출되는지 궁금하다.
+                    //       자동으로 호출되지 않는다면 Matrix에서 ObjectPool<TPacket>의 Pool은 무의미한 것인지 검증해야 한다.
                 }
             }
             while( 0 < RcdSize );

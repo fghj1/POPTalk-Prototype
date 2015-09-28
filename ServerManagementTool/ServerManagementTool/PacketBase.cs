@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ServerManagementTool
 {
+    #region interface IPacketBase
     public interface IPacketBase
     {
         bool Read( out bool Value );
@@ -39,7 +40,9 @@ namespace ServerManagementTool
         bool Write( char Value );
         bool Write( char[] Value, int Length );
     }
+    #endregion
 
+    #region interface IProtocolBase
     public interface IProtocolBase
     {
         int GetProtocolNo();
@@ -49,4 +52,5 @@ namespace ServerManagementTool
         bool Read( IPacketBase UnitPacket );
         bool Write( IPacketBase UnitPacket );
     }
+    #endregion
 }
